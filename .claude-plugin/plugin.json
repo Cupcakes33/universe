@@ -1,0 +1,8 @@
+{
+  "name": "universe",
+  "description": "AI Agent Orchestration for Claude Code - 복잡한 프로젝트를 79% 성공률의 작은 task로 분해하여 실행하는 multi-agent 워크플로우",
+  "version": "1.0.0",
+  "author": {
+    "name": "a1234"
+  }
+}

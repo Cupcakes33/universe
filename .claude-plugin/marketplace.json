@@ -1,0 +1,13 @@
+{
+  "name": "universe-marketplace",
+  "owner": {
+    "name": "a1234"
+  },
+  "plugins": [
+    {
+      "name": "universe",
+      "source": "./",
+      "description": "AI Agent Orchestration - 79% Rule 기반 multi-agent 워크플로우"
+    }
+  ]
+}
