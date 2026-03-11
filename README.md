@@ -482,28 +482,28 @@ README는 `~/.claude/README-universe.md`에 별도로 배치합니다 (명령어
 
 ## FAQ
 
-**Q: 중간 단계를 건너뛸 수 있나요?**
+**Q: 중간 단계를 건너뛸 수 있나요?** <br>
 A: 각 단계는 이전 단계의 산출물을 필요로 합니다. 다만, 해당 산출물이 이미 존재하면 그 단계부터 시작할 수 있습니다.
 
-**Q: project 모드와 feature 모드를 동시에 진행할 수 있나요?**
+**Q: project 모드와 feature 모드를 동시에 진행할 수 있나요?** <br>
 A: 가능합니다. project의 `tasks/PROGRESS.md`와 feature의 `docs/features/{NNN}/tasks/PROGRESS.md`는 독립적입니다. `/universe.7-status`로 둘 다 확인할 수 있습니다.
 
-**Q: feature가 여러 개이면 어떻게 되나요?**
+**Q: feature가 여러 개이면 어떻게 되나요?** <br>
 A: 각 feature는 `docs/features/{NNN}-{name}/` 아래에 독립적으로 관리됩니다. NNN은 자동으로 증가합니다 (001, 002, 003...).
 
-**Q: feature 완료 후 프로젝트 문서는 어떻게 되나요?**
+**Q: feature 완료 후 프로젝트 문서는 어떻게 되나요?** <br>
 A: `/universe.6-sync`의 feature 통합 모드가 spec/plan의 변경사항을 `architecture.md`, `design.md` 등에 자동으로 병합합니다. Feature 디렉토리는 히스토리 보존을 위해 삭제하지 않으며, spec.md의 Status를 `Done`으로 변경합니다.
 
-**Q: execute.sh는 언제 사용하나요?**
+**Q: execute.sh는 언제 사용하나요?** <br>
 A: task가 많고 중간에 개입할 필요가 없을 때 사용합니다. 각 task마다 fresh Claude 세션을 실행하므로 context 오염이 없고, 실행 중에도 터미널 출력으로 진행 상황을 모니터링할 수 있습니다. 3회 연속 진행이 없으면 자동으로 중단됩니다.
 
-**Q: execute 도중 설계를 변경하고 싶으면 어떻게 하나요?**
+**Q: execute 도중 설계를 변경하고 싶으면 어떻게 하나요?** <br>
 A: 코드를 먼저 수정한 후 `/universe.6-sync`로 문서를 코드에 맞게 갱신하시면 됩니다.
 
-**Q: task 하나가 예상보다 커서 완료되지 않았다면 어떻게 하나요?**
+**Q: task 하나가 예상보다 커서 완료되지 않았다면 어떻게 하나요?** <br>
 A: execute 중 task 크기가 79%를 초과하면 자동으로 분할됩니다. 분할된 새 task는 PROGRESS.md에 즉시 반영됩니다.
 
-**Q: PROGRESS.md를 수동으로 편집해도 되나요?**
+**Q: PROGRESS.md를 수동으로 편집해도 되나요?** <br>
 A: 가능합니다. 다만 상태 값(`대기`, `진행중`, `완료`, `차단됨`)과 테이블 포맷을 유지해야 `/universe.7-status`가 정상적으로 파싱할 수 있습니다.
 
 ## 라이선스
