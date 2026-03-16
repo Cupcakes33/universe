@@ -6,13 +6,13 @@
 ```
 
 ## 전제 조건
-- **project 모드**: `docs/design.md`와 `docs/architecture.md`가 존재해야 한다.
+- **project 모드**: `spec/spec.md`가 존재해야 한다. (`spec/erd.md`, `spec/tech-stack.md`, `spec/contracts/`도 권장)
 - **feature 모드**: `docs/features/{NNN}-{name}/spec.md`와 `docs/features/{NNN}-{name}/plan.md`가 존재해야 한다.
 - 없으면 `/universe.3-blueprint`를 먼저 실행하라고 안내하고 중단.
 
 ## 모드 감지
 - `docs/features/{NNN}-{name}/plan.md`가 있으면 → feature 모드
-- `docs/architecture.md`만 있으면 → project 모드
+- `spec/spec.md`만 있으면 → project 모드
 - 둘 다 있으면 → 사용자에게 어느 모드로 진행할지 질문
 
 ---
@@ -24,10 +24,10 @@
 ### 1단계: 입력 문서 로딩
 
 다음 문서를 모두 읽는다:
-- `docs/design.md`
-- `docs/architecture.md`
-- `docs/erd.md` (있으면)
-- `docs/tech-stack.md` (있으면)
+- `spec/spec.md` (필수 — 유저 시나리오, 아키텍처, MVP 범위)
+- `spec/erd.md` (있으면 — 데이터 모델)
+- `spec/tech-stack.md` (있으면 — 기술 스택)
+- `spec/contracts/*.md` (있으면 — API contract)
 - `docs/research.md` (있으면)
 - `docs/lessons.md` (있으면)
 
@@ -52,6 +52,8 @@
 - 하나의 task = 하나의 파일/기능/모듈에 집중
 - task 간 의존성을 명확히 표시
 - Phase를 논리적으로 구분 (기반 -> 핵심 -> 통합 -> 품질)
+- 각 task의 "컨텍스트" 섹션에서 `spec/` 문서의 관련 섹션을 참조 (예: "spec/contracts/patient.md의 POST /api/v1/questionnaire 참조")
+- task에서 spec과 다른 구현이 필요하면, task 문서에 "[Spec 변경 필요]" 표시를 추가하고 변경 이유를 기술
 
 **각 task 문서의 필수 포맷:**
 ```markdown
@@ -68,7 +70,7 @@
 
 ## 컨텍스트
 > 이 task가 전체 시스템에서 어떤 위치인가?
-> 관련 docs/ 문서 섹션 참조
+> 관련 spec/ 문서 참조 (예: spec/contracts/patient.md, spec/erd.md#엔티티명)
 
 ## 상세 요구사항
 1. [구체적 구현 항목]
@@ -113,10 +115,11 @@
 - 다음 관점에서 검증:
   1. **크기 적절성**: 이 task가 정말 30분~1시간 크기인가? 너무 크면 분할 제안
   2. **누락 검출**: docs/의 요구사항 중 어떤 task에도 할당되지 않은 것은?
-  3. **의존성 검증**: 순환 의존이 없는가? 의존성 순서가 논리적인가?
-  4. **모호성 검출**: "상세 요구사항"이 구현 시 해석의 여지 없이 명확한가?
-  5. **테스트 기준 검증**: 테스트 기준이 검증 가능한가? (자동화 가능 우선)
-  6. **병렬 Wave 구성**: 의존성 없는 task끼리 Wave로 묶어 병렬 실행 가능하게 구성
+  3. **Spec 정합성**: 각 task의 요구사항이 spec/ 문서와 일치하는가? 불일치하면 task에 "[Spec 변경 필요]" 표시 추가
+  4. **의존성 검증**: 순환 의존이 없는가? 의존성 순서가 논리적인가?
+  5. **모호성 검출**: "상세 요구사항"이 구현 시 해석의 여지 없이 명확한가?
+  6. **테스트 기준 검증**: 테스트 기준이 검증 가능한가? (자동화 가능 우선)
+  7. **병렬 Wave 구성**: 의존성 없는 task끼리 Wave로 묶어 병렬 실행 가능하게 구성
 - 문제 발견 시 해당 task 파일을 직접 수정
 - `tasks/00-index.md`에 전체 의존성 맵과 병렬 Wave 정리
 
@@ -181,6 +184,7 @@
 - `docs/features/{NNN}-{name}/spec.md`
 - `docs/features/{NNN}-{name}/plan.md`
 - `docs/features/{NNN}-{name}/research.md` (있으면)
+- `spec/` 디렉토리 전체 (기존 project spec 참조)
 
 ### 2단계: 팀 편성
 
@@ -283,3 +287,4 @@
 - feature 모드 task 파일명: `F{NNN}-{번호 두자리}-{kebab-case-이름}.md`
 - 모든 task는 PROGRESS.md에 등록되어야 한다
 - 컨텍스트 압축 후에도 PROGRESS.md만 읽으면 현재 상태를 알 수 있어야 한다
+- task는 spec/에서 파생된다. 구현 중 spec과 다른 결정이 필요하면 spec을 먼저 변경한다.

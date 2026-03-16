@@ -7,6 +7,7 @@
 
 ## 전제 조건
 - 없음. universe 워크플로우의 첫 단계.
+- `spec/` 디렉토리가 존재하면 기존 spec 문서를 컨텍스트로 읽어 참고한다.
 
 ## 인자
 - `$ARGUMENTS`: `[project|feature] <자연어 설명>`
@@ -38,6 +39,7 @@
 - `$ARGUMENTS`를 기반으로 해당 도메인의 핵심 개념, 용어, 업계 표준 조사
 - 웹 검색으로 유사 프로젝트, 오픈소스 레퍼런스, 기술 블로그 수집
 - 핵심 기술적 제약사항과 일반적인 아키텍처 패턴 정리
+- `spec/` 디렉토리가 있으면 기존 프로젝트 spec을 참고하여 리서치
 - 산출물: `docs/research-domain.md` (나중에 research.md로 병합)
 
 **codebase-analyst에게 할당할 task:**
@@ -80,8 +82,9 @@
    - 검증 및 리스크
 4. `docs/domain-insights.md`가 존재하는지 확인
 5. `docs/lessons.md`가 존재하는지 확인 (교훈이 없으면 "해당 없음" 기록)
-6. 팀 종료
-7. 사용자에게 요약 보고:
+6. `spec/` 디렉토리가 이미 존재하면, research 결과 중 기존 spec과 충돌하는 내용을 사용자에게 알림
+7. 팀 종료
+8. 사용자에게 요약 보고:
    - 핵심 발견사항 3~5개
    - 주요 리스크 상위 3개
    - 다음 단계: `/universe.2-design`으로 설계 논의 시작 안내
@@ -108,7 +111,7 @@
 
 | Agent 이름 | 역할 | 담당 |
 |-----------|------|------|
-| `impact-analyst` | 탐색 1 | 기존 코드에서 feature 관련 파일/모듈 식별, import/dependency 분석 |
+| `impact-analyst` | 탐색 1 | 기존 코드에서 feature 관련 파일/모듈 식별, import/dependency 분석, spec/ 문서 참조 영향 분석 |
 | `feature-researcher` | 탐색 2 | feature 도메인의 외부 레퍼런스, 베스트 프랙티스 웹 검색 |
 | `regression-analyst` | 탐색 3 | 변경으로 깨질 수 있는 기존 기능, 테스트 영향 분석 |
 | `devil-advocate` | 검증 | 다른 agent 결과의 반론/리스크 평가 |
@@ -117,6 +120,7 @@
 
 **impact-analyst에게 할당할 task:**
 - 프로젝트 전체 디렉토리 구조 파악
+- `spec/` 문서 (`spec/spec.md`, `spec/erd.md`, `spec/contracts/*.md`)를 참조하여 영향 분석
 - feature 설명과 관련된 파일/모듈 식별
 - import/dependency graph 분석으로 영향 범위 추적
 - 관련 테스트 파일 식별

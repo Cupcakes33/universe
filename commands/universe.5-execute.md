@@ -79,12 +79,15 @@ chmod +x execute.sh
    - 없으면 오류 출력 후 중단
 4. 선행 의존성이 미완료이면 경고만 출력하고 진행 (사용자 명시 지정이므로)
 
-### 2단계: 실행
+### 2단계: Spec 확인 + 실행
 
 1. PROGRESS.md에서 해당 task 상태 → `진행중`으로 변경
-2. `tasks/learnings.md` 읽기 (이전 패턴 파악)
-3. `tasks/{task-id}*.md` 읽기 (task 상세)
-4. TDD 방식으로 구현 (테스트 먼저 → 구현 → 검증)
+2. **Spec-First Protocol**: task 문서의 "컨텍스트"에서 참조하는 spec/ 문서를 읽는다
+   - 예: task가 `spec/contracts/patient.md` 참조 → 해당 파일 읽기
+   - 예: task가 `spec/erd.md#intake_session` 참조 → 해당 섹션 읽기
+3. `tasks/learnings.md` 읽기 (이전 패턴 파악)
+4. `tasks/{task-id}*.md` 읽기 (task 상세)
+5. TDD 방식으로 구현 (테스트 먼저 → 구현 → 검증)
 
 ### 3단계: 완료 처리
 
@@ -92,6 +95,10 @@ chmod +x execute.sh
 - PROGRESS.md task 상태 → `완료`, 검증 컬럼 업데이트
 - git commit: `feat: {task-id} {task-name}`
 - `tasks/learnings.md` 에 발견사항 추가 (--- 구분자 이후에)
+- **Spec 변경 필요 시**: 구현 중 spec과 다른 결정이 필요했으면:
+  1. spec/ 파일을 먼저 업데이트 (erd.md, contracts/*.md, spec.md 등)
+  2. `spec/spec.md`의 Changelog에 변경 이유 기록
+  3. 영향받는 다른 task가 있으면 PROGRESS.md 비고에 "[Spec 변경됨: {변경 내용}]" 표기
 
 **실패 시:**
 - PROGRESS.md task 상태 → `차단됨`, 비고에 원인 기록
@@ -113,11 +120,18 @@ chmod +x execute.sh
 - 해당 Phase에서 생성/수정된 **모든 파일을 직접 읽는다**
 - 요약본이나 보고서에 의존하지 않는다
 
-**4-3. 산출물 대조 검증**
-다음 문서와 실제 코드를 대조한다:
-- `docs/design.md` 또는 `docs/features/{NNN}-{name}/spec.md`: 요구사항이 빠짐없이 구현되었는가?
-- `docs/architecture.md` 또는 `docs/features/{NNN}-{name}/plan.md`: 설계한 모듈 구조, 인터페이스, 의존 관계를 따르는가?
-- `docs/erd.md`: 데이터 모델이 설계와 일치하는가? (있으면)
+**4-3. Spec 대조 검증**
+다음 spec 문서와 실제 코드를 대조한다:
+- `spec/spec.md`: 유저 시나리오와 아키텍처가 구현과 일치하는가?
+- `spec/erd.md`: 데이터 모델이 실제 스키마와 일치하는가?
+- `spec/contracts/*.md`: API 엔드포인트, 요청/응답, 비즈니스 규칙이 실제 구현과 일치하는가?
+- feature 모드: `docs/features/{NNN}-{name}/spec.md`와 `plan.md`도 추가 대조
+
+**4-3b. Spec 동기화**
+코드와 spec이 다른 부분을 발견하면:
+- 코드가 합리적인 이유로 spec과 다르면: **spec을 코드에 맞게 업데이트**
+- 코드가 spec을 잘못 구현했으면: 수정 task를 생성
+- 모든 spec 변경은 `spec/spec.md`의 Changelog에 기록
 
 **4-4. 코드 품질 검증**
 1. **규칙/컨벤션 준수**: CLAUDE.md, CODE-STANDARDS.md의 규칙을 따르는가?
@@ -157,3 +171,4 @@ chmod +x execute.sh
 3. **테스트 통과 없이 완료 금지**: 테스트 기준이 없는 task는 구현 후 직접 검증 기준을 만들어 확인한다.
 4. **task 외 작업 금지**: task 문서에 없는 기능을 추가하지 않는다. 필요하면 새 task를 만든다.
 5. **Phase 검증 통과 없이 다음 Phase 진행 금지**: 심각도 상 문제가 있으면 수정 task 완료 전까지 다음 Phase 착수 금지.
+6. **Spec-First**: 구현 전 관련 spec/ 문서를 반드시 확인한다. 구현 중 spec과 다른 결정이 필요하면 spec을 먼저 변경하고 구현한다. spec과 코드가 항상 일치해야 한다.
