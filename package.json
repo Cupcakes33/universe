@@ -1,0 +1,32 @@
+{
+  "name": "@cupcakes33/create-universe",
+  "version": "1.0.0",
+  "description": "AI Agent Orchestration for Claude Code",
+  "bin": {
+    "create-universe": "bin/cli.js"
+  },
+  "files": [
+    "bin/",
+    "commands/",
+    "execute.sh",
+    "README.md"
+  ],
+  "keywords": [
+    "claude",
+    "claude-code",
+    "ai-agent",
+    "multi-agent",
+    "workflow",
+    "orchestration",
+    "universe"
+  ],
+  "author": "Cupcakes33",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cupcakes33/universe"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
